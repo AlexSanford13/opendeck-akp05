@@ -176,36 +176,40 @@ async fn device_events_task(candidate: &CandidateDevice) -> Result<(), MirajazzE
     Ok(())
 }
 
+fn map_position(mut position: u8, is_encoder: bool) -> Result<u8, MirajazzError> {
+    if is_encoder {
+        position += 10;
+    }
+    let position = match position {
+        0 => 10,
+        1 => 11,
+        2 => 12,
+        3 => 13,
+        4 => 14,
+        5 => 5,
+        6 => 6,
+        7 => 7,
+        8 => 8,
+        9 => 9,
+        10 => 0,
+        11 => 1,
+        12 => 2,
+        13 => 3,
+        _ => {
+            log::error!("Invalid key position");
+            return Err(MirajazzError::BadData);
+        }
+    };
+    Ok(position)
+}
+
 /// Handles different combinations of "set image" event, including clearing the specific buttons and whole device
 pub async fn handle_set_image(device: &Device, evt: SetImageEvent) -> Result<(), MirajazzError> {
     let is_encoder = evt.controller.as_deref() == Some("Encoder");
     match (evt.position, evt.image) {
-        (Some(mut position), Some(image)) => {
+        (Some(position), Some(image)) => {
             log::info!("Setting image for button {}", position);
-
-            if is_encoder {
-                position += 10;
-            }
-            let position = match position {
-                0 => 10,
-                1 => 11,
-                2 => 12,
-                3 => 13,
-                4 => 14,
-                5 => 5,
-                6 => 6,
-                7 => 7,
-                8 => 8,
-                9 => 9,
-                10 => 0,
-                11 => 1,
-                12 => 2,
-                13 => 3,
-                _ => {
-                    log::error!("Invalid key position");
-                    return Err(MirajazzError::BadData);
-                }
-            };
+            let position = map_position(position, is_encoder)?;
 
             // OpenDeck sends image as a data url, so parse it using a library
             let url = DataUrl::process(image.as_str()).unwrap(); // Isn't expected to fail, so unwrap it is
@@ -238,6 +242,7 @@ pub async fn handle_set_image(device: &Device, evt: SetImageEvent) -> Result<(),
             device.flush().await?;
         }
         (Some(position), None) => {
+            let position = map_position(position, is_encoder)?;
             device.clear_button_image(position).await?;
             device.flush().await?;
         }
