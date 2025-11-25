@@ -1,0 +1,26 @@
+name: Package
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Install dependencies
+      run: sudo apt-get update -y && sudo apt-get install -y just
+    - name: Build
+      run: cargo build --release
+    - name: Package
+      run: just package
+    - name: Run tests
+      run: cargo test --verbose
