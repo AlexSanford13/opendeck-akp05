@@ -9,7 +9,7 @@ pub const DEVICE_NAMESPACE: &str = "n4";
 pub const ROW_COUNT: usize = 2;
 pub const COL_COUNT: usize = 5;
 pub const KEY_COUNT: usize = 15;
-pub const ENCODER_COUNT: usize = 6;
+pub const ENCODER_COUNT: usize = 4;
 pub const DEVICE_TYPE: u8 = 7; // StreamDeckPlus
 
 #[derive(Debug, Clone)]
