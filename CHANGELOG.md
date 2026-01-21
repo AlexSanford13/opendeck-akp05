@@ -2,9 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.9.0] - 2026-01-21
+
+Encoder presses are now released
+
+Send periodic keep-alives (might fix issues with VSD Inside devices)
+
+Use env_logger so now you can run `RUST_LOG=opendeck_akp05=trace opendeck` and get trace output info at `$HOME/.local/share/opendeck/logs/plugins/com.github.ambiso.opendeck-akp05.sdPlugin.log`.
+
 ## [0.8.6] - 2026-01-21
 
 Add Mars Gaming MSD Pro support
+
 Add Soomfon CN003 support
 
 ## [0.8.5] - 2025-12-25
@@ -30,6 +39,8 @@ Less log spam & ignore touchscreen swipes (fixes hang)
 ## [0.8.0] - 2025-12-09
 
 Initial release for AKP-05
+
+---
 
 ## [0.7.3] - 2025-10-25
 
