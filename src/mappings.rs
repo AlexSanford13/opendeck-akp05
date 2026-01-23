@@ -15,6 +15,7 @@ pub const DEVICE_TYPE: u8 = 7; // StreamDeckPlus
 #[derive(Debug, Clone)]
 pub enum Kind {
     Akp05E,
+    Akp05EPro,
     N4EN,
     N4Pro,
     MsdPro,
@@ -26,6 +27,7 @@ pub const N4_PRO_PID: u16 = 0x1023;
 
 pub const AJAZZ_VID: u16 = 0x0300;
 pub const AKP05E_PID: u16 = 0x3004;
+pub const AKP05E_PRO_PID: u16 = 0x3013;
 
 pub const MIRABOX_VID: u16 = 0x6603;
 pub const N4EN_PID: u16 = 0x1007;
@@ -38,6 +40,7 @@ pub const CN003_PID: u16 = 0x3002;
 
 // Map all queries to usage page 65440 and usage id 1 for now
 pub const AKP05E_QUERY: DeviceQuery = DeviceQuery::new(65440, 1, AJAZZ_VID, AKP05E_PID);
+pub const AKP05E_PRO_QUERY: DeviceQuery = DeviceQuery::new(65440, 1, AJAZZ_VID, AKP05E_PRO_PID);
 pub const N4EN_QUERY: DeviceQuery = DeviceQuery::new(65440, 1, MIRABOX_VID, N4EN_PID);
 pub const N4_PRO_QUERY: DeviceQuery = DeviceQuery::new(65440, 1, VSDINSIDE_VID, N4_PRO_PID);
 pub const MSD_PRO_QUERY: DeviceQuery = DeviceQuery::new(65440, 1, MARS_GAMING_VID, MSD_PRO_PID);
@@ -45,6 +48,7 @@ pub const CN003_QUERY: DeviceQuery = DeviceQuery::new(65440, 1, SOOMFON_VID, CN0
 
 pub const QUERIES: &[DeviceQuery] = &[
     AKP05E_QUERY,
+    AKP05E_PRO_QUERY,
     N4EN_QUERY,
     N4_PRO_QUERY,
     MSD_PRO_QUERY,
@@ -57,6 +61,7 @@ impl Kind {
         match vid {
             AJAZZ_VID => match pid {
                 AKP05E_PID => Some(Kind::Akp05E),
+                AKP05E_PRO_PID => Some(Kind::Akp05EPro),
                 _ => None,
             },
 
@@ -89,6 +94,7 @@ impl Kind {
     pub fn human_name(&self) -> String {
         match &self {
             Self::Akp05E => "Ajazz AKP05E",
+            Self::Akp05EPro => "Ajazz AKP05E Pro",
             Self::N4EN => "Mirabox N4EN",
             Self::N4Pro => "VSDInside N4 Pro",
             Self::MsdPro => "Mars Gaming MSD-Pro",
